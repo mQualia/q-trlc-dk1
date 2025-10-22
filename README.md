@@ -127,6 +127,58 @@ lerobot-record  \
 ```
 </details>
 
+<details>
+<summary>Bimanual Teleoperation
+</summary>
+
+```bash
+lerobot-teleoperate \
+    --robot.type=bi_dk1_follower \
+    --robot.right_arm_port=/dev/ttyACM0 \
+    --robot.left_arm_port=/dev/ttyACM1 \
+    --robot.joint_velocity_scaling=1.0 \
+    --robot.cameras="{ 
+        context: {type: opencv, index_or_path: 2, width: 640, height: 360, fps: 30}, 
+        right_wrist: {type: opencv, index_or_path: 4, width: 640, height: 360, fps: 30},
+        left_wrist: {type: opencv, index_or_path: 0, width: 640, height: 360, fps: 30},
+      }" \
+    --teleop.type=bi_dk1_leader \
+    --teleop.right_arm_port=/dev/ttyACM2 \
+    --teleop.left_arm_port=/dev/ttyACM3 \
+    --display_data=true \
+    --display_url=100.88.6.81
+```
+</details>
+
+<details>
+<summary>Bimanual Teleoperation
+</summary>
+
+```bash
+lerobot-record \
+    --robot.type=bi_dk1_follower \
+    --robot.right_arm_port=/dev/ttyACM0 \
+    --robot.left_arm_port=/dev/ttyACM1 \
+    --robot.joint_velocity_scaling=1.0 \
+    --robot.cameras="{ 
+        context: {type: opencv, index_or_path: 2, width: 640, height: 360, fps: 30}, 
+        right_wrist: {type: opencv, index_or_path: 4, width: 640, height: 360, fps: 30},
+        left_wrist: {type: opencv, index_or_path: 0, width: 640, height: 360, fps: 30},
+      }" \
+    --teleop.type=bi_dk1_leader \
+    --teleop.right_arm_port=/dev/ttyACM2 \
+    --teleop.left_arm_port=/dev/ttyACM3 \
+    --dataset.repo_id=$USER/disassemble_lego \
+    --dataset.push_to_hub=false \
+    --dataset.num_episodes=40 \
+    --dataset.episode_time_s=180 \
+    --dataset.reset_time_s=120 \
+    --dataset.single_task="Disassemble the Lego and sort it." \
+    --dataset.reset_time_s=120 \
+    --resume=true
+```
+</details>
+
 
 
 ## Acknowledgements
