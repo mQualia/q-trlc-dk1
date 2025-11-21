@@ -60,6 +60,11 @@ class DK1Follower(Robot):
         self.EMIT_VELOCITY_SCALE = 100  # rad/s
         self.EMIT_CURRENT_SCALE = 1000  # A
         
+        self.JOINT_LIMITS = {
+            "joint_4": (-100/180*np.pi, 100/180*np.pi),
+            "joint_5": (-90/180*np.pi, 90/180*np.pi),
+        }
+        
         self.DM4310_SPEED = 200/60*2*np.pi   # rad/s (200  rpm | 20.94 rad/s)
         self.DM4340_SPEED = 52.5/60*2*np.pi  # rad/s (52.5 rpm | 5.49  rad/s)
 
@@ -216,6 +221,9 @@ class DK1Follower(Robot):
                 self.control.control_pos_force(motor, gripper_goal_pos_mapped, self.DM4310_SPEED*self.EMIT_VELOCITY_SCALE,
                                                i_des=self.config.max_gripper_torque/self.DM4310_TORQUE_CONSTANT*self.EMIT_CURRENT_SCALE)
             else:
+                if key in self.JOINT_LIMITS:
+                    goal_pos[key] = np.clip(goal_pos[key], self.JOINT_LIMITS[key][0], self.JOINT_LIMITS[key][1])
+
                 self.control.control_Pos_Vel(
                     motor, goal_pos[key], self.config.joint_velocity_scaling*self.DM4340_SPEED)
 
