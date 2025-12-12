@@ -179,7 +179,14 @@ lerobot-record \
 ```
 </details>
 
+## URDF
 
+<p align="center">
+    <img src="https://github.com/andreaskoepf/trlc-dk1-follower-urdf/blob/main/assets/dk1_vsual_right.png">
+</p>
+
+A high-quality URDF file was developed by community member Andreas Köpf:
+[andreaskoepf/trlc-dk1-follower-urdf](https://github.com/andreaskoepf/trlc-dk1-follower-urdf)
 
 ## Acknowledgements
 
