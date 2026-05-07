@@ -76,8 +76,14 @@ class BiDK1Follower(Robot):
 
     @property
     def _motors_ft(self) -> dict[str, type]:
-        return {f"left_{motor}.pos": float for motor in self.left_arm.motors} | {
-            f"right_{motor}.pos": float for motor in self.right_arm.motors
+        # NOTE: 939d5f7 (impedance refactor) renamed DK1Follower's public
+        # `motors` attribute to private `_motors`. Re-derive the per-arm motor
+        # name list from the same source DK1Follower.action_features uses
+        # (JOINT_NAMES + 'gripper') instead of poking at the private dict.
+        from lerobot_robot_trlc_dk1.follower import JOINT_NAMES
+        per_arm = JOINT_NAMES + ["gripper"]
+        return {f"left_{j}.pos": float for j in per_arm} | {
+            f"right_{j}.pos": float for j in per_arm
         }
 
     @property
