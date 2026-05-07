@@ -184,9 +184,18 @@ class DK1Follower(Robot):
         # Read arm position
         start = time.perf_counter()
 
+        # Pipelined batched read: send all motor refresh requests back-to-back,
+        # then drain replies. This is ~7x faster than the previous loop on
+        # USB-CDC <-> CAN bridges where each non-blocking recv() round-tripped
+        # serially. See lerobot_robot_trlc_dk1/motors/DM_Control_Python/DM_CAN.py.
+        n_seen = self.control.pipelined_refresh(self.motors.values())
+        if n_seen != len(self.motors):
+            logger.warning(
+                f"{self} pipelined_refresh: only {n_seen}/{len(self.motors)} motors replied within timeout."
+            )
+
         obs_dict = {}
         for key, motor in self.motors.items():
-            self.control.refresh_motor_status(motor)
             if key == "gripper":
                 # Normalize gripper position between 1 (closed) and 0 (open)
                 obs_dict[f"{key}.pos"] = map_range(
